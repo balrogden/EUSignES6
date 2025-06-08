@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>testSign</title>
+</head>
+
+<body>
+    <div><button class="btn btn-primary" type="button" onclick="trySign()">Try sign "Hello"</button><span id="euOperationStatus">Text</span></div>
+    <div><select id="CAsServersSelect" style="width: 80%;"></select></div><input type="file" id="PKeyFileInput"><button class="btn btn-primary" id="PKeyFileClear" type="button">X</button>
+    <div id="PKeyFileName"></div>
+    <div><span>password:</span><input type="password" id="PKeyPassword" placeholder="*" value="12345Key"></div>
+    <div><select id="ChoosePKCertsInput" style="width: 80%;"></select></div><textarea id="result" style="width: 80%;"></textarea>
+    <div id="SelectedCRLsList"></div>
+    <div id="SelectedPKCertsList"></div>
+    <div id="SelectPKCertsList"></div>
+    <div id="SelectedCertsList"></div>
+    <div id="euOperationStatus"></div>
+    <div id="euOperationErrors"></div>
+    <script src="modules/euscp.js" ></script>
+    <script src="modules/euscpm.js" ></script>
+    <script src="modules/euutils.js" ></script>
+    <script src="modules/euscpfactory.js" ></script>
+    <script src="modules/app_euscpfactory.js" ></script>
+</body>
+
+</html>
