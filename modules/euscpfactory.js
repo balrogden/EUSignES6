@@ -1,5 +1,5 @@
-import { Utils } from "./euutils.mjs";
-import { EUSignCP, setEUSignCPModuleInitialized } from "./euscpm.mjs";
+import { Utils } from "./euutils.js";
+import { EUSignCP, setEUSignCPModuleInitialized } from "./euscpm.js";
 import {
   EU_MAKE_PKEY_PFX_CONTAINER_PARAMETER,
   EU_CERT_KEY_TYPE_DSTU4145,
@@ -7,12 +7,15 @@ import {
   EU_CERT_KEY_TYPE_ECDSA,
   EU_ERROR_CERT_NOT_FOUND,
   EU_ERROR_NOT_SUPPORTED,
+  EU_WARNING_END_OF_ENUM,
   EU_SUBJECT_TYPE_END_USER,
   EU_KEY_USAGE_DIGITAL_SIGNATURE,
   UA_OID_EXT_KEY_USAGE_STAMP,
-} from "./euscpm.mjs";
+  EndUserCertificate, 
+} from "./euscpm.js";
+export {euSignFactory}
 
-export class EUSignCPFactory {
+class EUSignCPFactory {
   constructor() {
     this.URL_GET_CERTIFICATES =
       "https://testsite.cna.ua/sign/CACertificates.p7b?version=1.0.19";
@@ -72,11 +75,11 @@ export class EUSignCPFactory {
             //pThis.loadCertsAndCRLsFromLocalStorage();
           } else {
             /*document.getElementById(
-                        	'SelectedCertsList').innerHTML = 
-                        		"Локальне сховище не підтримується";
-                        document.getElementById(
-                        	'SelectedCRLsList').innerHTML = 
-                        		"Локальне сховище не підтримується";*/
+              'SelectedCertsList').innerHTML = 
+                "Локальне сховище не підтримується";
+            document.getElementById(
+              'SelectedCRLsList').innerHTML = 
+                "Локальне сховище не підтримується";*/
           }
         }
 
@@ -86,10 +89,10 @@ export class EUSignCPFactory {
         //this.setSelectPKCertificatesEvents();
 
         /*if (utils.IsSessionStorageSupported()) {
-                	setTimeout( function() {
-                		  this.readPrivateKeyAsStoredFile();
-                	  }, 10);
-                }*/
+          setTimeout( function() {
+              this.readPrivateKeyAsStoredFile();
+            }, 10);
+        }*/
 
         //this.updateCertList();
 
@@ -129,19 +132,19 @@ export class EUSignCPFactory {
         var servers = JSON.parse(casResponse.replace(/\\'/g, "'"));
 
         /*var select = document.getElementById("CAsServersSelect");
-                    for (var i = 0; i < servers.length; i++){
-                    	var option = document.createElement("option");
-                    	option.text = servers[i].issuerCNs[0];
-                    	select.add(option);
-                    }
+        for (var i = 0; i < servers.length; i++){
+          var option = document.createElement("option");
+          option.text = servers[i].issuerCNs[0];
+          select.add(option);
+        }
 
-                    var option = document.createElement("option");
-                    option.text = "інший";
-                    select.add(option);
+        var option = document.createElement("option");
+        option.text = "інший";
+        select.add(option);
 
-                    select.onchange = function() {
-                    	pThis.setCASettings(select.selectedIndex);
-                    };*/
+        select.onchange = function() {
+          pThis.setCASettings(select.selectedIndex);
+        };*/
 
         pThis.CAsServers = servers;
         pThis.defCAServerIndexJKS = null;
@@ -889,7 +892,7 @@ export class EUSignCPFactory {
 
     var _onSuccessGetJKS = function (jksInfos) {
       if (jksInfos.length == 0) {
-        errorHandler(
+        pThis.errorHandler(
           "Виникла помилка при зчитуванні особистого ключа. " +
             "Опис помилки: файл з особистим ключем пошкоджено - перелік сертифікатів порожній"
         );
@@ -1240,7 +1243,7 @@ export class EUSignCPFactory {
 
 //=============================================================================
 
-export var euSignFactory = new EUSignCPFactory();
+var euSignFactory = new EUSignCPFactory();
 var euSign = new EUSignCP();
 var utils = new Utils(euSign);
 

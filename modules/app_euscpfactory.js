@@ -1,4 +1,4 @@
-import {euSignFactory} from "./euscpfactory.mjs"
+import {euSignFactory} from "./euscpfactory.js"
 
 window.onload = function() {
   updateServers();
@@ -6,10 +6,11 @@ window.onload = function() {
   euSignFactory.onChangePrivateKeyFile = updateKeysSublist;
   euSignFactory.onerror = showError;
   privKeyChanged();
+  document.getElementById("PKeyFileInput").onchange = privKeyChanged;
+  document.getElementById("PKeyFileClear").onclick = privKeyClear;
+  document.getElementById("BtnSign").onclick = trySign;
 };
 
-document.getElementById("PKeyFileInput").onchange = privKeyChanged;
-document.getElementById("PKeyFileClear").onclick = privKeyClear;
 
 function updateServers(){
   var servers = euSignFactory.CAsServers;
