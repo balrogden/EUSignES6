@@ -40,7 +40,7 @@ IsFileSystemSupported () {
 	window.requestFileSystem = window.requestFileSystem ||
 		window.webkitRequestFileSystem;
 	window.requestFileSystem(window.PERSISTENT,
-		EU_PERSISTENT_FS_SIZE, initFunction, HandleErrorFileSystem);
+		EU_PERSISTENT_FS_SIZE, initFunction, this.HandleErrorFileSystem);
 }
 IsFileSupported () {
 	if (window.File && window.FileReader &&
@@ -199,8 +199,10 @@ LoadFile (file, onSuccess, onFail) {
 
 	function fileLoaded(file, onSuccess, onFail) {
 		return function (evt) {
-			if (evt.target.readyState != FileReader.DONE)
+			if (evt.target.readyState != FileReader.DONE){
+				onFail(evt.target)
 				return;
+			}
 
 			var fileData = new Object();
 			fileData.name = file.name;
@@ -309,7 +311,7 @@ GetFiles (folderName) {
 
 	return JSON.parse(window.localStorage.getItem(folderName));
 }
-DeleteFile (folderName, fileName, data) {
+DeleteFile (folderName, fileName ) {
 	var filesArr = this.GetFiles(folderName);
 	var index = filesArr.indexOf(fileName);
 	if (index > 0) {

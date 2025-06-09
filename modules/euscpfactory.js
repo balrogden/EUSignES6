@@ -13,6 +13,7 @@ import {
   UA_OID_EXT_KEY_USAGE_STAMP,
   EndUserCertificate, 
 } from "./euscpm.js";
+import { } from "./euscp.js";
 export {euSignFactory}
 
 class EUSignCPFactory {
@@ -21,7 +22,7 @@ class EUSignCPFactory {
       "/signdata/CACertificates.p7b?version=1.0.19";
     this.URL_CAS = "/signdata/CAs.json?version=1.0.19";
     this.URL_XML_HTTP_PROXY_SERVICE =
-      "/signdata/ProxyHandler.php";
+      "http://testsite.cna.ua/signdata/ProxyHandler.php";
 
     this.CertsLocalStorageName = "Certificates";
     this.CRLsLocalStorageName = "CRLs";
@@ -36,6 +37,7 @@ class EUSignCPFactory {
 
     //this.recepientsCertsIssuers" : null,
     //this.recepientsCertsSerials" : null,
+        console.log("servers clerar");
     (this.CAsServers = null),
       (this.offline = false),
       (this.useCMP = false),
@@ -45,6 +47,7 @@ class EUSignCPFactory {
       (this.defCAServerIndexJKS = null),
       (this.defCAServerIndexZS2 = null),
       (this.CAServerAutoDetected = true),
+      (this.pkReaded = false),
       (this.pkFileObject = null),
       (this.pkFileName = null),
       (this.pkFileData = null),
@@ -134,7 +137,7 @@ class EUSignCPFactory {
         /*var select = document.getElementById("CAsServersSelect");
         for (var i = 0; i < servers.length; i++){
           var option = document.createElement("option");
-          option.text = servers[i].issuerCNs[0];
+          option.text = servers[i].title// issuerCNs[0];
           select.add(option);
         }
 
@@ -145,8 +148,13 @@ class EUSignCPFactory {
         select.onchange = function() {
           pThis.setCASettings(select.selectedIndex);
         };*/
-
+        for(var i=0; i<servers.length; ++i){
+          if( !('title' in servers[i] ) )
+            servers[i].title = servers[i].issuerCNs[0];
+          servers[i].index = i;
+        }
         pThis.CAsServers = servers;
+        console.log("servers loaded");
         pThis.defCAServerIndexJKS = null;
         pThis.defCAServerIndexZS2 = null;
         for (let i = 0; i < servers.length; ++i) {
@@ -599,9 +607,10 @@ class EUSignCPFactory {
 
   readPrivateKey(keyName, key, password, certificates, fromCache) {
     var pThis = this;
+    this.pkReaded = false;
     var _onError = function (e) {
       setStatus("");
-
+        
       if (fromCache) {
         pThis.removeStoredPrivateKey();
         pThis.privateKeyReaded(false);
@@ -845,6 +854,8 @@ class EUSignCPFactory {
         }
 
         var jksKey = {
+          index: keyIndex,
+          title: (certs[0]?.infoEx?.subjCN).toString() + ' (' + alias.toString() + ')',
           alias: alias,
           privateKey: key.GetPrivateKey(),
           certificates: certs,
@@ -1181,7 +1192,9 @@ class EUSignCPFactory {
     return false;
   }
   //-----------------------------------------------------------------------------
-  privateKeyReaded(isReaded) {}
+  privateKeyReaded(isReaded) {
+    this.pkReaded = isReaded;
+  }
   /*setSelectPKCertificatesEvents: function() {
         	document.getElementById('ChoosePKCertsInput').addEventListener(
         		'change',  function(evt) {
@@ -1260,7 +1273,9 @@ function setPointerEvents(element, enable) {
 
 function setStatus(message) {
   if (message != "") message = "(" + message + "...)";
-  document.getElementById("euOperationStatus").innerHTML = message;
+  var el = document.getElementById("euOperationStatus")
+  if(el)
+    el.innerHTML = message;
 }
 
 function saveFile(fileName, array) {

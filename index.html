@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <div><button id="BtnSign" class="btn btn-primary" type="button">Try sign "Hello"</button><span id="euOperationStatus">Text</span></div>
+    <div><button id="BtnSign" class="btn btn-primary" type="button">Try sign "Hello"</button><span id="euOperationStatus">Text</span> <button id="BtnLoadLib" class="btn btn-primary" type="button">Load library</button></div>
     <div><select id="CAsServersSelect" style="width: 80%;"></select></div><input type="file" id="PKeyFileInput"><button class="btn btn-primary" id="PKeyFileClear" type="button">X</button>
     <div id="PKeyFileName"></div>
     <div><span>password:</span><input type="password" id="PKeyPassword" placeholder="*" value="12345Key"></div>
@@ -19,11 +19,12 @@
     <div id="SelectedCertsList"></div>
     <div id="euOperationStatus"></div>
     <div id="euOperationErrors"></div>
-    <script src="modules/euscp.js" type="module"></script>
     <script src="modules/euscpm.js" type="module"></script>
+    <script src="modules/euscp.js" type="module"></script>
     <script src="modules/euutils.js" type="module"></script>
     <script src="modules/euscpfactory.js" type="module"></script>
     <script src="modules/app_euscpfactory.js" type="module"></script>
+    <script src="modules/r.js" ></script>
 </body>
 
 </html>

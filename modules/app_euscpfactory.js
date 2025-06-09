@@ -10,6 +10,7 @@ window.onload = function() {
   document.getElementById("PKeyFileInput").onchange = privKeyChanged;
   document.getElementById("PKeyFileClear").onclick = privKeyClear;
   document.getElementById("BtnSign").onclick = trySign;
+  document.getElementById("BtnLoadLib").onclick = loadLib;
 };
 
 
@@ -20,7 +21,7 @@ function updateServers(){
   if(servers){
     for (var i = 0; i < servers.length; i++){
       var option = document.createElement("option");
-      option.text = servers[i].issuerCNs[0];
+      option.text = servers[i].title;
       select.add(option);
     }
     select.selectedIndex = euSignFactory.CAServerIndex===null?-1:euSignFactory.CAServerIndex;
@@ -34,7 +35,7 @@ function updateKeysSublist(){
   if(certList)
     for (var i = 0; i < certList.length; i++){
       var option = document.createElement("option");
-      option.text = certList[i].alias.toString() + ' (' + (certList[i]?.certificates[0]?.infoEx?.subjCN).toString() + ')';
+      option.text = certList[i].title
       select.add(option);
     }
 }
@@ -77,5 +78,11 @@ function trySign(){
   {
     showError('SignFactory not ready ');
   }
+}
+
+var lib;
+function loadLib(){
+  if(!lib)
+    lib = require(['/modules/euscp.js'],()=>{console.log('require-done')})
 }
 //------------------------------------------------------------------------------

@@ -25,10 +25,10 @@ export {
   setEUSignCPModuleInitialized,
   EUSignCP,
   Module,
- XMLHTTPProxyService,
- XMLHTTPDirectAccess,
- XMLHTTPDirectAccessAddresses,
- CP1251PointerToUTF8,
+XMLHTTPProxyService,
+XMLHTTPDirectAccess,
+XMLHTTPDirectAccessAddresses,
+CP1251PointerToUTF8,
 };
 
 //=============================================================================
@@ -2983,14 +2983,15 @@ function EUArrayFromArrayOfArray(array) {
     this.arraysPtr = Module._malloc(EU_PTR_SIZE * array.length);
     this.arraysLengthPtr = Module._malloc(EU_INT_SIZE * array.length);
 
-    for (var i = 0; i < array.length; i++) {
+    var i;
+    for (i = 0; i < array.length; i++) {
       Module.setValue((this.arraysPtr + i * EU_PTR_SIZE) | 0, 0);
     }
 
-    for (var i = 0; i < array.length; i++) {
+    for (i = 0; i < array.length; i++) {
       var pCurPtr = (this.arraysPtr + i * EU_PTR_SIZE) | 0;
 
-      var buffer = _malloc(array[i].length);
+      var buffer = Module._malloc(array[i].length);
       Module.writeArrayToMemory(array[i], buffer);
 
       Module.setValue(pCurPtr, buffer, "i32*");
@@ -3118,8 +3119,8 @@ function MakeUID(length) {
 //=============================================================================
 
 var EU_MODULE_INITIALIZE_ON_LOAD = 
-	((typeof EU_MODULE_INITIALIZE_ON_LOAD) != 'undefined') ? 
-		EU_MODULE_INITIALIZE_ON_LOAD : true;
+  ((typeof EU_MODULE_INITIALIZE_ON_LOAD) != 'undefined') ? 
+    EU_MODULE_INITIALIZE_ON_LOAD : true;
 
 //-----------------------------------------------------------------------------
 var EUSignCPModuleInitialized;
@@ -3148,13 +3149,16 @@ function EUSignCPModuleInitialize() {
         IsEUSignCPModuleInitialized = true;
       }
     } catch (e) {
+      console.error(e);
       Module.setStatus("(не ініціалізовано)");
     }
 
     try {
       if (typeof EUSignCPModuleInitialized == "function")
         EUSignCPModuleInitialized(IsEUSignCPModuleInitialized);
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
   }, 100);
 }
 
@@ -3163,18 +3167,18 @@ function EUSignCPModuleInitialize() {
 var Module = {
   preRun: [],
   postRun: [
-        		function() {
-        			setTimeout(function() {
-        				try {
-        					if (typeof(EUSignCPModuleLoaded) == "function")
-        						EUSignCPModuleLoaded();
-        						
-        					if (EU_MODULE_INITIALIZE_ON_LOAD)
-        						EUSignCPModuleInitialize();
-        				} catch (e) {
-        				}
-        			}, 100);
-        		}
+            function() {
+              setTimeout(function() {
+                try {
+                  // if (typeof(EUSignCPModuleLoaded) == "function")
+                  //   EUSignCPModuleLoaded();
+                    
+                  if (EU_MODULE_INITIALIZE_ON_LOAD)
+                    EUSignCPModuleInitialize();
+                } catch (e) {
+                }
+              }, 100);
+            }
   ],
   print: (function () {
     return function (text) {
