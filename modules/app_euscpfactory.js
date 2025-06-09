@@ -6,6 +6,7 @@ window.onload = function() {
   euSignFactory.onChangePrivateKeyFile = updateKeysSublist;
   euSignFactory.onerror = showError;
   privKeyChanged();
+  document.getElementById("CAsServersSelect").onchange = (e)=>{console.log("selChanged",e);};
   document.getElementById("PKeyFileInput").onchange = privKeyChanged;
   document.getElementById("PKeyFileClear").onclick = privKeyClear;
   document.getElementById("BtnSign").onclick = trySign;
@@ -22,7 +23,7 @@ function updateServers(){
       option.text = servers[i].issuerCNs[0];
       select.add(option);
     }
-    select.selectedItem = euSignFactory.CAServerIndex===null?-1:euSignFactory.CAServerIndex;
+    select.selectedIndex = euSignFactory.CAServerIndex===null?-1:euSignFactory.CAServerIndex;
   }
 }
 
