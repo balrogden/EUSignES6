@@ -18,10 +18,10 @@ export {euSignFactory}
 class EUSignCPFactory {
   constructor() {
     this.URL_GET_CERTIFICATES =
-      "https://testsite.cna.ua/sign/CACertificates.p7b?version=1.0.19";
-    this.URL_CAS = "https://testsite.cna.ua/sign/CAs.json?version=1.0.19";
+      "signdata/CACertificates.p7b?version=1.0.19";
+    this.URL_CAS = "signdata/CAs.json?version=1.0.19";
     this.URL_XML_HTTP_PROXY_SERVICE =
-      "https://testsite.cna.ua/sign/ProxyHandler.php";
+      "signdata/ProxyHandler.php";
 
     this.CertsLocalStorageName = "Certificates";
     this.CRLsLocalStorageName = "CRLs";
