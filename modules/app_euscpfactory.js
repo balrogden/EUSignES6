@@ -70,8 +70,10 @@ function trySign(){
     euSignFactory.pkFilePassword = document.getElementById("PKeyPassword").value;
     var select = document.getElementById("ChoosePKCertsInput");
     euSignFactory.pkFileItemIndex = select.selectedIndex===null?-1:select.selectedIndex;
+    var dataSigned;
     euSignFactory.readPrivateKeyButtonClick() //перенести в signData??
-    var dataSigned = euSignFactory.signData('Hello',true, true, 'def');
+    if( euSignFactory.pkReaded )
+      dataSigned = euSignFactory.signData('Hello',true, true, 'def');
     document.getElementById('result').value = dataSigned;
   }
   else
